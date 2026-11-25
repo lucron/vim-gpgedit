@@ -1,0 +1,56 @@
+*gpgedit.txt*	Edit GPG encrypted files, keeping their recipients
+
+CONTENTS						*gpgedit*
+
+	1. Usage ............ |gpgedit-usage|
+	2. Recipients ....... |gpgedit-recipients|
+	3. Options .......... |gpgedit-options|
+	4. Limitations ...... |gpgedit-limitations|
+
+==============================================================================
+1. Usage						*gpgedit-usage*
+
+Open, edit and save "*.gpg" and "*.pgp" files as usual. They are decrypted
+when opened and encrypted to the same recipients when saved.
+
+Saving is refused when the file changed on disk since it was opened. Use ":w!"
+to overwrite it.
+
+For a new file, enter the recipients with |:GpgList| before saving.
+
+==============================================================================
+2. Recipients						*gpgedit-recipients*
+
+							*:GpgList*
+:GpgList		Open the recipients of the current file in a buffer.
+			Remove lines with |dd|. Add lines with |o|, each with
+			one name, email address or key ID.
+
+			":w" applies the list if every line matches exactly
+			one usable key. Then save the file itself with ":w".
+			":q!" leaves the list without changes.
+
+			Ambiguous names are replaced by all matching keys with
+			a leading "?". Delete the wrong lines and remove the
+			"?" from the right one.
+
+			":w!" applies a list that lacks your own key.
+
+==============================================================================
+3. Options						*gpgedit-options*
+
+							*g:gpgedit_pattern*
+g:gpgedit_pattern	Files handled by the plugin, see |autocmd-pattern|.
+			Set it before the plugin is loaded.
+			Default: "*.gpg,*.pgp"
+
+==============================================================================
+4. Limitations						*gpgedit-limitations*
+
+- Recipients are not checked for trust ("--trust-model always").
+- Files are not signed. An existing signature is lost on save.
+- Files that use a passphrase or hidden recipients open read-only.
+- 'viminfo', 'backup' and 'writebackup' stay off for the rest of the session.
+- A graphical pinentry is required.
+
+ vim:tw=78:ts=8:noet:ft=help:norl:
